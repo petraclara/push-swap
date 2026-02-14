@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func ParseArgs(arg string) (Stack, error){
+func ParseArgs(arg string) (Stack, error) {
 	if strings.TrimSpace(arg) == "" {
 		return Stack{}, nil
 	}
@@ -42,10 +42,10 @@ func IsSorted(a Stack) bool {
 
 func Indexify(a Stack) Stack {
 	sorted := make(Stack, len(a))
-	copy(sorted, a)
+	leng := int(copy(sorted, a))
 
-	for i := 0; i < len(sorted)-1; i++ {
-		for j := i + 1; j < len(sorted); j++ {
+	for i := 0; i < leng; i++ {
+		for j := i + 1; j < leng; j++ {
 			if sorted[i] > sorted[j] {
 				sorted[i], sorted[j] = sorted[j], sorted[i]
 			}

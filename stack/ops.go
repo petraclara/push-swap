@@ -2,8 +2,8 @@ package stack
 
 type Stack []int
 
-func Pa(a, b *Stack){
-	if len(*b) == 0{
+func Pa(a, b *Stack) {
+	if len(*b) == 0 {
 		return
 	}
 	val := (*b)[0]
@@ -11,13 +11,22 @@ func Pa(a, b *Stack){
 	*a = append(Stack{val}, (*a)...)
 }
 
-func Pb(a, b *Stack){
-	if len(*a) == 0{
+// func Pb(a, b *Stack){
+// 	if len(*a) == 0{
+// 		return
+// 	}
+// 	val := (*a)[0]
+// 	*b = (*a)[1:]
+// 	*a = append(Stack{val}, (*b)...)
+// }
+
+func Pb(a, b *Stack) {
+	if len(*a) == 0 {
 		return
 	}
 	val := (*a)[0]
-	*b = (*a)[1:]
-	*a = append(Stack{val}, (*b)...)
+	*a = (*a)[1:]
+	*b = append(Stack{val}, (*b)...)
 }
 
 func Sa(a *Stack) {
@@ -67,7 +76,6 @@ func Rra(a *Stack) {
 	last := (*a)[len(*a)-1]
 	*a = append(Stack{last}, (*a)[:len(*a)-1]...)
 }
-
 
 func Rrb(b *Stack) {
 	if len(*b) < 2 {
