@@ -27,6 +27,9 @@ func main() {
 
 	for scanner.Scan() {
 		instr := strings.TrimSpace(scanner.Text())
+		if instr == "" {
+			continue
+		}
 
 		switch instr {
 		case "sa":
@@ -51,21 +54,17 @@ func main() {
 			stack.Rrb(&b)
 		case "rrr":
 			stack.Rrr(&a, &b)
-		case "":
-			// ignore empty lines
 		default:
 			fmt.Fprintln(os.Stderr, "Error")
 			return
 		}
 	}
 
-	// Scanner error
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "Error")
 		return
 	}
 
-	// Final check
 	if stack.IsSorted(a) && len(b) == 0 {
 		fmt.Println("OK")
 	} else {

@@ -11,13 +11,13 @@ func Pa(a, b *Stack){
 	*a = append(Stack{val}, (*a)...)
 }
 
-func Pb(a, b *Stack){
-	if len(*a) == 0{
+func Pb(a, b *Stack) {
+	if len(*a) == 0 {
 		return
 	}
 	val := (*a)[0]
-	*b = (*a)[1:]
-	*a = append(Stack{val}, (*b)...)
+	*a = (*a)[1:]
+	*b = append(Stack{val}, (*b)...)
 }
 
 func Sa(a *Stack) {
