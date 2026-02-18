@@ -30,30 +30,29 @@ func main() {
 	// Convert values to indexes (0..n-1)
 	a = stack.Indexify(a)
 
-	// Radix sort
-	radixSort(&a, &b)
+	stack.SortStack(&a, &b)
 }
 
-// ---------- RADIX SORT ----------
+// // ---------- RADIX SORT ----------
 
-func radixSort(a, b *stack.Stack) {
-	size := len(*a)
-	maxBits := stack.MaxBits(*a)
+// func radixSort(a, b *stack.Stack) {
+// 	size := len(*a)
+// 	maxBits := stack.MaxBits(*a)
 
-	for bit := 0; bit < maxBits; bit++ {
-		for i := 0; i < size; i++ {
-			if ((*a)[0]>>bit)&1 == 0 {
-				stack.Pb(a, b)
-				fmt.Println("pb")
-			} else {
-				stack.Ra(a)
-				fmt.Println("ra")
-			}
-		}
+// 	for bit := 0; bit < maxBits; bit++ {
+// 		for i := 0; i < size; i++ {
+// 			if ((*a)[0]>>bit)&1 == 0 {
+// 				stack.Pb(a, b)
+// 				fmt.Println("pb")
+// 			} else {
+// 				stack.Ra(a)
+// 				fmt.Println("ra")
+// 			}
+// 		}
 
-		for len(*b) > 0 {
-			stack.Pa(a, b)
-			fmt.Println("pa")
-		}
-	}
-}
+// 		for len(*b) > 0 {
+// 			stack.Pa(a, b)
+// 			fmt.Println("pa")
+// 		}
+// 	}
+// }

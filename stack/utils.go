@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func ParseArgs(arg string) (Stack, error){
+func ParseArgs(arg string) (Stack, error) {
 	if strings.TrimSpace(arg) == "" {
 		return Stack{}, nil
 	}
@@ -65,17 +65,17 @@ func Indexify(a Stack) Stack {
 	return result
 }
 
-func MaxBits(a Stack) int {
-	max := 0
-	for _, v := range a {
-		if v > max {
-			max = v
-		}
-	}
+// func MaxBits(a Stack) int {
+// 	max := 0
+// 	for _, v := range a {
+// 		if v > max {
+// 			max = v
+// 		}
+// 	}
 
-	bits := 0
-	for (max >> bits) != 0 {
-		bits++
-	}
-	return bits
-}
+// 	bits := 0
+// 	for (max >> bits) != 0 {
+// 		bits++
+// 	}
+// 	return bits
+// }
