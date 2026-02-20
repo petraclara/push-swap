@@ -1,5 +1,5 @@
-NAME_PS = push-swap
-NAME_CK = checker
+NAME_PS = ps
+NAME_CK = ck
 
 SRC_PS = ./push-swap/main.go
 SRC_CK = ./checker/main.go
@@ -15,9 +15,7 @@ $(NAME_CK):
 clean:
 	rm -f $(NAME_PS) $(NAME_CK)
 
-fclean: clean
-
-re: fclean all
+re: clean all
 
 test:
 	go test -v ./stack/...

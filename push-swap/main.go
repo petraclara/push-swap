@@ -16,7 +16,7 @@ func main() {
 	// Parse input
 	a, err := stack.ParseArgs(os.Args[1])
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error")
+		fmt.Println(err)
 		return
 	}
 
