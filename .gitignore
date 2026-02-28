@@ -1,0 +1,6 @@
+# ignore project executables from being commited
+ps
+ck
+
+# ignore ops.txt, it'll be local to cloned copy
+visualizer/ops.txt

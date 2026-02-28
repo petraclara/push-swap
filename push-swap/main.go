@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 
 	"push-swap/stack"
 )
@@ -28,6 +30,12 @@ func main() {
 		return
 	}
 
+	// Save original numbers before indexifying (for visualizer)
+	original := make([]string, len(a))
+	for i, v := range a {
+		original[i] = strconv.Itoa(v)
+	}
+
 	b := stack.Stack{}
 
 	// Convert values to indexes (0..n-1)
@@ -41,18 +49,28 @@ func main() {
 		chunkSort(&a, &b)
 	}
 
-	outputFile, err := os.OpenFile("/home/cgisclar/Desktop/audits/push-swap/visualizer/ops.txt", os.O_WRONLY|os.O_TRUNC, 0644)
+	// Write ops.txt for visualizer
+	opsFile, err := os.OpenFile("visualizer/ops.txt", os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	defer outputFile.Close()
-
+	defer opsFile.Close()
 	for _, v := range operations {
-		_, err = outputFile.WriteString(v)
-		_, _ = outputFile.WriteString("\n")
+		_, err = opsFile.WriteString(v + "\n")
 		if err != nil {
 			log.Fatal(err.Error())
 		}
+	}
+
+	// Write initial.txt for visualizer (original unsorted numbers)
+	initFile, err := os.OpenFile("visualizer/initial.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer initFile.Close()
+	_, err = initFile.WriteString(strings.Join(original, " ") + "\n")
+	if err != nil {
+		log.Fatal(err.Error())
 	}
 }
 

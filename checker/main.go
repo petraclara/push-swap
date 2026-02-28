@@ -15,12 +15,16 @@ func main() {
 		return
 	}
 
+	// Join all arguments into a single string
+	argString := strings.Join(os.Args[1:], " ")
+
 	// Parse initial stack A
-	a, err := stack.ParseArgs(os.Args[1])
+	a, err := stack.ParseArgs(argString)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error")
+		fmt.Fprintln(os.Stderr, "Error: failed to parse arguments on checker program")
 		return
 	}
+
 	b := stack.Stack{}
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -55,13 +59,13 @@ func main() {
 		case "rrr":
 			stack.Rrr(&a, &b)
 		default:
-			fmt.Fprintln(os.Stderr, "Error")
+			fmt.Fprintln(os.Stderr, "Error: failed, encountered an invalid operation on checker")
 			return
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error")
+		fmt.Fprintln(os.Stderr, "Error: failed to scan")
 		return
 	}
 

@@ -2,8 +2,8 @@ package stack
 
 type Stack []int
 
-func Pa(a, b *Stack){
-	if len(*b) == 0{
+func Pa(a, b *Stack) {
+	if len(*b) == 0 {
 		return
 	}
 	val := (*b)[0]
@@ -67,7 +67,6 @@ func Rra(a *Stack) {
 	last := (*a)[len(*a)-1]
 	*a = append(Stack{last}, (*a)[:len(*a)-1]...)
 }
-
 
 func Rrb(b *Stack) {
 	if len(*b) < 2 {

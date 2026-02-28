@@ -1,25 +1,126 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
-        <title>push-swap web visualizer</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>push_swap · visualizer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;700;800&display=swap"
+            rel="stylesheet"
+        />
         <link rel="stylesheet" href="style.css" />
     </head>
-
     <body>
-        <h1>Push Swap Visualizer</h1>
+        <!-- SCANLINE OVERLAY -->
+        <div class="scanlines" aria-hidden="true"></div>
 
-        <div class="container">
-            <div>
-                <h2>Stack A</h2>
-                <div id="stackA"></div>
+        <!-- HEADER -->
+        <header>
+            <h1>
+                <span>push</span>_<em>swap</em>
+                <span class="dot">·</span> visualizer
+            </h1>
+            <div class="header-right">
+                <span class="badge" id="sorted-badge">unsorted</span>
+            </div>
+        </header>
+
+        <!-- CONTROLS -->
+        <div class="controls">
+            <div class="input-zone">
+                <label class="ctrl-label">fallback stack</label>
+                <input
+                    type="text"
+                    id="stack-input"
+                    placeholder="auto-loaded from initial.txt …"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+                <button class="btn btn-load" id="btn-load">
+                    &#8635; simulate
+                </button>
             </div>
 
-            <h2>Stack B</h2>
-            <div id="stackB"></div>
-            <>
+            <div class="sep"></div>
+
+            <div class="speed-zone">
+                <label class="ctrl-label">speed</label>
+                <input type="range" id="speed" min="1" max="10" value="5" />
+                <span class="speed-val" id="speed-val">5</span>
+            </div>
+
+            <div class="sep"></div>
+
+            <button class="btn btn-ghost" id="btn-prev" disabled>
+                &#8592;
+            </button>
+            <button class="btn btn-play" id="btn-play" disabled>
+                &#9654; play
+            </button>
+            <button class="btn btn-ghost" id="btn-next" disabled>
+                &#8594;
+            </button>
+            <button class="btn btn-ghost" id="btn-reset" disabled>
+                &#8635; reset
+            </button>
+
+            <div class="op-counter">
+                <span id="step-current">0</span> /
+                <span id="step-total">0</span>
+            </div>
         </div>
 
-        <button onclick="start()">Start</button>
+        <!-- MAIN -->
+        <main>
+            <!-- STACK A -->
+            <section class="stack-panel stack-a" aria-label="Stack A">
+                <div class="panel-header">
+                    <span class="dot-led led-a"></span>
+                    <span class="panel-title">Stack A</span>
+                    <span class="panel-count" id="count-a">0</span>
+                </div>
+                <div class="current-op" id="current-op-display">
+                    <span class="op-pill" id="op-pill"></span>
+                    <span class="op-desc" id="op-desc">— initial state —</span>
+                </div>
+                <div class="bars-wrap" id="bars-a">
+                    <p class="empty-msg">empty</p>
+                </div>
+            </section>
+
+            <!-- STACK B -->
+            <section class="stack-panel stack-b" aria-label="Stack B">
+                <div class="panel-header">
+                    <span class="dot-led led-b"></span>
+                    <span class="panel-title">Stack B</span>
+                    <span class="panel-count" id="count-b">0</span>
+                </div>
+                <div class="current-op-spacer"></div>
+                <div class="bars-wrap" id="bars-b">
+                    <p class="empty-msg">empty</p>
+                </div>
+            </section>
+
+            <!-- LOG -->
+            <aside class="log-panel" aria-label="Operation log">
+                <div class="panel-header">
+                    <span class="panel-title">Log</span>
+                    <span class="panel-count" id="total-ops-label">0 ops</span>
+                </div>
+                <div class="log-body" id="log-body"></div>
+            </aside>
+        </main>
+
+        <!-- STATUS BAR -->
+        <footer class="statusbar">
+            <span>A: <strong id="st-a">0</strong></span>
+            <span>B: <strong id="st-b">0</strong></span>
+            <span>op: <strong id="st-op">—</strong></span>
+            <span class="st-sorted" id="st-sorted">not sorted</span>
+            <span class="hint">space=play ←/→=step R=reset</span>
+        </footer>
 
         <script src="script.js"></script>
     </body>
