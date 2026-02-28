@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"log"
+	"os"
 
 	"push-swap/stack"
 )
@@ -41,7 +41,7 @@ func main() {
 		chunkSort(&a, &b)
 	}
 
-	outputFile, err := os.OpenFile("/home/cgisclar/Desktop/audits/push-swap/visualizer/ops.txt", os.O_WRONLY|os.O_TRUNC, 0644)
+	outputFile, err := os.OpenFile("visualizer/ops.txt", os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
