@@ -21,7 +21,7 @@ func main() {
 	// Parse initial stack A
 	a, err := stack.ParseArgs(argString)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error")
+		fmt.Fprintln(os.Stderr, "Error: failed to parse arguments on checker program")
 		return
 	}
 
@@ -59,13 +59,13 @@ func main() {
 		case "rrr":
 			stack.Rrr(&a, &b)
 		default:
-			fmt.Fprintln(os.Stderr, "Error")
+			fmt.Fprintln(os.Stderr, "Error: failed, encountered an invalid operation on checker")
 			return
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error")
+		fmt.Fprintln(os.Stderr, "Error: failed to scan")
 		return
 	}
 

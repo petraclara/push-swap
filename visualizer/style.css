@@ -1,0 +1,617 @@
+/* ─────────────────────────────────────────────
+   RESET & TOKENS
+───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #080b0f;
+    --surface: #0d1117;
+    --surface2: #111820;
+    --border: #1e2b35;
+    --a-col: #00d4ff;
+    --a-dim: rgba(0, 212, 255, 0.12);
+    --b-col: #ff6b35;
+    --b-dim: rgba(255, 107, 53, 0.12);
+    --green: #39ff8f;
+    --yellow: #ffe566;
+    --muted: #3d5565;
+    --text: #bdd4e0;
+    --text-dim: #506070;
+
+    --header-h: 52px;
+    --ctrl-h: 52px;
+    --status-h: 28px;
+    --panel-h: calc(100vh - var(--header-h) - var(--ctrl-h) - var(--status-h));
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+}
+
+/* ─────────────────────────────────────────────
+   SCANLINES
+───────────────────────────────────────────── */
+.scanlines {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 212, 255, 0.012) 2px,
+        rgba(0, 212, 255, 0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* ─────────────────────────────────────────────
+   HEADER
+───────────────────────────────────────────── */
+header {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+header h1 {
+    font-family: "Syne", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+header h1 span {
+    color: var(--a-col);
+}
+header h1 em {
+    color: var(--b-col);
+    font-style: normal;
+}
+header h1 .dot {
+    color: var(--muted);
+}
+
+.badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 3px;
+    background: var(--a-dim);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    color: var(--a-col);
+    transition:
+        background 0.3s,
+        border-color 0.3s,
+        color 0.3s;
+}
+
+.badge.sorted {
+    background: rgba(57, 255, 143, 0.1);
+    border-color: rgba(57, 255, 143, 0.3);
+    color: var(--green);
+}
+
+/* ─────────────────────────────────────────────
+   CONTROLS
+───────────────────────────────────────────── */
+.controls {
+    height: var(--ctrl-h);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+
+.controls::-webkit-scrollbar {
+    display: none;
+}
+
+.ctrl-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.input-zone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+#stack-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    padding: 5px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+#stack-input:focus {
+    border-color: var(--a-col);
+}
+
+.sep {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────── */
+.btn {
+    cursor: pointer;
+    padding: 5px 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 3px;
+    border: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition:
+        opacity 0.15s,
+        transform 0.1s,
+        background 0.15s;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+.btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+    transform: none;
+    pointer-events: none;
+}
+
+.btn-load {
+    background: var(--a-col);
+    color: #031820;
+}
+.btn-load:hover {
+    background: #33ddff;
+}
+
+.btn-play {
+    background: var(--green);
+    color: #031a09;
+}
+.btn-play:hover {
+    background: #5effa9;
+}
+.btn-play.paused {
+    background: var(--b-col);
+    color: #1a0700;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+.btn-ghost:hover {
+    border-color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────
+   SPEED SLIDER
+───────────────────────────────────────────── */
+.speed-zone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.speed-val {
+    font-size: 0.68rem;
+    color: var(--a-col);
+    min-width: 14px;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 80px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--a-col);
+}
+
+/* ─────────────────────────────────────────────
+   OP COUNTER
+───────────────────────────────────────────── */
+.op-counter {
+    margin-left: auto;
+    font-size: 0.65rem;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+#step-current {
+    color: var(--a-col);
+    font-weight: 700;
+}
+
+/* ─────────────────────────────────────────────
+   MAIN LAYOUT
+───────────────────────────────────────────── */
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 260px;
+    height: var(--panel-h);
+    overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────
+   STACK PANELS
+───────────────────────────────────────────── */
+.stack-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+    height: 100%;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+}
+
+.panel-title {
+    font-family: "Syne", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+}
+
+.panel-count {
+    margin-left: auto;
+    font-size: 0.6rem;
+    color: var(--muted);
+}
+
+.dot-led {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.led-a {
+    background: var(--a-col);
+    box-shadow: 0 0 7px var(--a-col);
+}
+.led-b {
+    background: var(--b-col);
+    box-shadow: 0 0 7px var(--b-col);
+}
+
+/* ─────────────────────────────────────────────
+   CURRENT OP DISPLAY (above Stack A)
+───────────────────────────────────────────── */
+.current-op {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 18px;
+    border-bottom: 1px solid var(--border);
+    min-height: 44px;
+    flex-shrink: 0;
+    background: var(--surface2);
+}
+
+.current-op-spacer {
+    min-height: 44px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+    flex-shrink: 0;
+}
+
+.op-pill {
+    font-family: "Syne", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    min-width: 40px;
+    letter-spacing: -0.01em;
+}
+
+.op-desc {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+}
+
+/* op color classes */
+.op-sa,
+.op-sb,
+.op-ss {
+    color: var(--yellow);
+}
+.op-pa,
+.op-pb {
+    color: var(--green);
+}
+.op-ra,
+.op-rb,
+.op-rr {
+    color: var(--a-col);
+}
+.op-rra,
+.op-rrb,
+.op-rrr {
+    color: var(--b-col);
+}
+
+/* ─────────────────────────────────────────────
+   BARS AREA
+───────────────────────────────────────────── */
+.bars-wrap {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2px;
+    padding: 12px 20px 12px 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.bars-wrap::-webkit-scrollbar {
+    width: 4px;
+}
+.bars-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+.bars-wrap::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+.empty-msg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   BAR ELEMENTS
+───────────────────────────────────────────── */
+.bar-row {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.bar-idx {
+    position: absolute;
+    left: -28px;
+    font-size: 0.52rem;
+    color: var(--muted);
+    text-align: right;
+    width: 22px;
+    pointer-events: none;
+}
+
+.bar {
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 7px;
+    flex-shrink: 0;
+    /* NO transition on height/flex to avoid reflow jitter */
+    transition:
+        width 0.12s ease,
+        background-color 0.15s;
+}
+
+.bar-val {
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.bar-row.is-top .bar {
+    outline: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ─────────────────────────────────────────────
+   LOG PANEL
+───────────────────────────────────────────── */
+.log-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.log-body {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 4px 0;
+    /* Lock scroll width so it doesn't shift layout */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.log-body::-webkit-scrollbar {
+    width: 4px;
+}
+.log-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+.log-body::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+.log-entry {
+    display: grid;
+    grid-template-columns: 30px 36px 1fr;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 14px 3px 10px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.log-entry:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.log-entry.past {
+    opacity: 0.3;
+}
+.log-entry.current {
+    background: rgba(0, 212, 255, 0.07);
+    border-left: 2px solid var(--a-col);
+    padding-left: 8px;
+}
+
+.log-num {
+    font-size: 0.56rem;
+    color: var(--muted);
+    text-align: right;
+}
+.log-op {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+.log-desc {
+    font-size: 0.58rem;
+    color: var(--muted);
+}
+
+/* ─────────────────────────────────────────────
+   STATUS BAR
+───────────────────────────────────────────── */
+.statusbar {
+    height: var(--status-h);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    flex-shrink: 0;
+}
+
+.statusbar strong {
+    color: var(--text);
+}
+.statusbar .st-sorted {
+    color: var(--muted);
+    margin-left: auto;
+}
+.statusbar .st-sorted.ok {
+    color: var(--green);
+}
+.statusbar .hint {
+    color: var(--border);
+    margin-left: auto;
+}
+
+/* ─────────────────────────────────────────────
+   ERROR STATE
+───────────────────────────────────────────── */
+.error-toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #3a0a00;
+    border: 1px solid #ff4422;
+    color: #ff8866;
+    font-size: 0.7rem;
+    padding: 8px 20px;
+    border-radius: 4px;
+    z-index: 1000;
+    animation: toast-in 0.2s ease;
+}
+
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}

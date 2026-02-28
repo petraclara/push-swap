@@ -18,10 +18,10 @@ func ParseArgs(arg string) (Stack, error) {
 	for _, p := range parts {
 		n, err := strconv.Atoi(p)
 		if err != nil {
-			return nil, errors.New("Error")
+			return nil, errors.New("Error: failed to run strconv.Atoi")
 		}
 		if seen[n] {
-			return nil, errors.New("Error")
+			return nil, errors.New("Error: failed, seen n")
 		}
 		seen[n] = true
 		stack = append(stack, n)
@@ -64,18 +64,3 @@ func Indexify(a Stack) Stack {
 
 	return result
 }
-
-// func MaxBits(a Stack) int {
-// 	max := 0
-// 	for _, v := range a {
-// 		if v > max {
-// 			max = v
-// 		}
-// 	}
-
-// 	bits := 0
-// 	for (max >> bits) != 0 {
-// 		bits++
-// 	}
-// 	return bits
-// }
